@@ -6,6 +6,7 @@ import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters.CollectionHasAsScala
+import scala.util.Try;
 
 object FacultyRepository {
 
@@ -52,6 +53,41 @@ object FacultyRepository {
       case None => None
     }
   }
+
+
+  def findFacultyByParams(param: String): Future[List[Faculty]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = Try(keyValue(1).toInt).toOption
+
+      val facultyDocument = Document(key -> value)
+
+      MongoDBConnection.facultyCollection
+        .find(facultyDocument)
+        .toFuture()
+        .map { docs =>
+          docs.map { doc =>
+            Faculty(
+              facultyId = doc.getInteger("facultyId"), // Переименовано
+              name = doc.getString("name"),
+              departmentsIds = Option(doc.getList("departmentsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty), // Переименовано
+              studentsIds = Option(doc.getList("studentsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty), // Переименовано
+              teachersIds = Option(doc.getList("teachersIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty), // Переименовано
+              curriculumPlansIds = Option(doc.getList("curriculumPlansIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty), // Переименовано
+              specialization = doc.getString("specialization"),
+              creationDate = doc.getString("creationDate"),
+              seats = doc.getInteger("seats")
+            )
+          }.toList
+        }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
+    }
+  }
+
 
   def addFaculty(faculty: Faculty): Future[String] = {
     val facultyDocument = BsonDocument(

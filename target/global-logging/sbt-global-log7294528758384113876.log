@@ -1,0 +1,130 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(early(addDefaultCommands), None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(addDefaultCommands, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(early(initialize), None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(initialize, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(boot, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(writeSbtVersion, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(reload, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(sbtStashOnFailure, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(onFailure loadFailed, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(loadp, None, None)[0m
+[0m[[0m[0minfo[0m] [0m[0mwelcome to sbt 1.9.7 (Homebrew Java 21.0.1)[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.loadUnit: plugins took 39.90275ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.loadUnit: defsScala took 0.09275ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Scanning directory /Users/erasyl/.sbt/1.0/plugins[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Found non-root projects [0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Done in /Users/erasyl/.sbt/1.0/plugins, returning: ()[0m
+[0m[[0m[0mdebug[0m] [0m[0mdeducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))[0m
+[0m[[0m[0mdebug[0m] [0m[0m  :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)[0m
+[0m[[0m[0mdebug[0m] [0m[0mPlugins.deducer#function took 6.028375 ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m          Load.resolveProject(global-plugins) took 15.574875ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m        Load.loadTransitive: finalizeProject(Project(id global-plugins, base: /Users/erasyl/.sbt/1.0/plugins, plugins: List(<none>))) took 30.636541ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Done in /Users/erasyl/.sbt/1.0/plugins, returning: (global-plugins)[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.loadUnit: loadedProjectsRaw took 39.866417ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.loadUnit: cleanEvalClasses took 0.067041ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Load.loadUnit(file:/Users/erasyl/.sbt/1.0/plugins/, ...) took 82.613708ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: load took 1296.201375ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: resolveProjects took 3.178292ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: finalTransforms took 30.598833ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: config.delegates took 2.671833ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: Def.make(settings)... took 185.006959ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: structureIndex took 44.431709ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.apply: mkStreams took 0.611375ms[0m
+[0m[[0m[0minfo[0m] [0m[0mloading global plugins from /Users/erasyl/.sbt/1.0/plugins[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.defaultLoad until apply took 2063.129708ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m          Load.loadUnit: plugins took 7.618416ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m          Load.loadUnit: defsScala took 0.00125ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Scanning directory /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/project[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Found non-root projects [0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Done in /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/project, returning: ()[0m
+[0m[[0m[0mdebug[0m] [0m[0mdeducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))[0m
+[0m[[0m[0mdebug[0m] [0m[0m  :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)[0m
+[0m[[0m[0mdebug[0m] [0m[0mPlugins.deducer#function took 0.745625 ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m              Load.resolveProject(scalaservicemgdiscipline-build) took 0.547166ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m            Load.loadTransitive: finalizeProject(Project(id scalaservicemgdiscipline-build, base: /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/project, plugins: List(<none>))) took 1.53175ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Done in /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/project, returning: (scalaservicemgdiscipline-build)[0m
+[0m[[0m[0mdebug[0m] [0m[0m          Load.loadUnit: loadedProjectsRaw took 2.337958ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m          Load.loadUnit: cleanEvalClasses took 0.009167ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m        Load.loadUnit(file:/Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/project/, ...) took 10.211916ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: load took 10.847625ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: resolveProjects took 0.05825ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: finalTransforms took 4.736542ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: config.delegates took 0.189541ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: Def.make(settings)... took 48.440958ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: structureIndex took 13.696416ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.apply: mkStreams took 0.00125ms[0m
+[0m[[0m[0minfo[0m] [0m[0mloading project definition from /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/project[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Load.loadUnit: plugins took 168.461291ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Load.loadUnit: defsScala took 0.001458ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Scanning directory /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.loadUnit: mkEval took 2.595459ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Found root project root w/ remaining [0m
+[0m[[0m[0mdebug[0m] [0m[0mdeducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.SbtPlugin),Set(Atom(sbt.ScriptedPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.SemanticdbPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.MiniDependencyTreePlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.SemanticdbPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mClause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))[0m
+[0m[[0m[0mdebug[0m] [0m[0m  :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)[0m
+[0m[[0m[0mdebug[0m] [0m[0mPlugins.deducer#function took 0.642041 ms[0m
+[0m[[0m[0minfo[0m] [0m[0mloading settings for project root from build.sbt ...[0m
+[0m[[0m[0mdebug[0m] [0m[0m        Load.resolveProject(root) took 1.100792ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m      Load.loadTransitive: finalizeProject(Project(id root, base: /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline, plugins: List(<none>))) took 2.100084ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m[Loading] Done in /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline, returning: (root)[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Load.loadUnit: loadedProjectsRaw took 69.057333ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Load.loadUnit: cleanEvalClasses took 1.910625ms[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Load.loadUnit(file:/Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/, ...) took 239.790958ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: load took 240.519542ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: resolveProjects took 0.081625ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: finalTransforms took 3.909ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: config.delegates took 0.168875ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: Def.make(settings)... took 35.483166ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: structureIndex took 12.643333ms[0m
+[0m[[0m[0mdebug[0m] [0m[0mLoad.apply: mkStreams took 0.001417ms[0m
+[0m[[0m[0minfo[0m] [0m[0mset current project to ScalaService2 (in build file:/Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(sbtPopOnFailure, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(resumeFromFailure, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(notifyUsersAboutShell, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(iflast shell, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 3 Scala sources to /Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/target/scala-2.13/classes ...[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/src/main/scala/route/studentRoute.scala:10:16: Implicit definition should have explicit type (inferred org.json4s.jackson.Serialization.type) [quickfixable][0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val serialization = jackson.Serialization[0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/erasyl/Desktop/programming/Scala/WebService/ScalaServiceMGDiscipline/src/main/scala/route/studentRoute.scala:11:16: Implicit definition should have explicit type (inferred org.json4s.DefaultFormats.type) [quickfixable][0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val formats = DefaultFormats[0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m6 deprecations (since 2.7.0); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m

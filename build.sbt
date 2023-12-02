@@ -13,10 +13,12 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-stream" % "2.6.16",
       "org.mongodb.scala" %% "mongo-scala-driver" % "4.4.0",
       "de.heikoseeberger" %% "akka-http-json4s" % "1.37.0",
-      // Дополнительные библиотеки JSON, если необходимо
-      "org.json4s" %% "json4s-native" % "4.0.3" ,
-      "org.json4s" %% "json4s-jackson" % "4.0.3" ,
-      "com.typesafe.akka" %% "akka-actor" % "2.6.16" ,
-
+      "org.json4s" %% "json4s-native" % "3.6.11", // Версию изменено на 3.6.11
+      "org.json4s" %% "json4s-jackson" % "3.6.11", // Версию изменено на 3.6.11
+      "com.typesafe.akka" %% "akka-actor" % "2.6.16",
+      "io.circe" %% "circe-core" % "0.14.1",
+      "io.circe" %% "circe-generic" % "0.14.1",
+      "io.spray" %% "spray-json" % "1.3.6",
     )
+
   )

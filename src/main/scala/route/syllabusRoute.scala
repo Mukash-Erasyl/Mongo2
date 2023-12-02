@@ -13,6 +13,11 @@ object SyllabusRoutes extends Json4sSupport {
   val route =
     pathPrefix("syllabus") {
       concat(
+        get {
+          parameter("param") { param =>
+            complete(SyllabusRepository.findSyllabusByParams(param.toString))
+          }
+        },
         pathEnd {
           concat(
             get {

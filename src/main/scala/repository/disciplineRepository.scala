@@ -6,13 +6,14 @@ import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters.CollectionHasAsScala
+import scala.util.Try;
 
 
 object DisciplineRepository {
 
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
 
-  def getAllDiscipline(): Future[List[Discipline]] = {
+  def getSortByHourDiscipline(): Future[List[Discipline]] = {
     val futureDiscipline = MongoDBConnection.disciplineCollection.find().toFuture();
 
     futureDiscipline.map{ docs =>
@@ -23,13 +24,41 @@ object DisciplineRepository {
           description = doc.getString("Description"),
           credits = doc.getInteger("Credits"),
           hours = doc.getInteger("Hours"),
-          disciplineType = doc.getString("DisciplineType"),
+          disciplineType = TypeOfDiscipline.withName(doc.getString("DisciplineType")),
           teacherIds = Option(doc.getList("TeacherIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
           department = doc.getString("Department"),
           studentIds = Option(doc.getList("StudentIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
           topics = Option(doc.getList("Topics", classOf[String])).map(_.asScala.toList).getOrElse(List.empty),
           classrooms = Option(doc.getList("Classrooms", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
-          language = doc.getString("Language"),
+          language = Languages.withName(doc.getString("Language")),
+          scheduleIds = Option(doc.getList("ScheduleIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+        )
+
+      }.toList.sortBy(_.hours)).getOrElse(List.empty)
+
+    }
+
+  }
+
+
+  def getAllDiscipline(): Future[List[Discipline]] = {
+    val futureDiscipline = MongoDBConnection.disciplineCollection.find().toFuture();
+
+    futureDiscipline.map { docs =>
+      Option(docs).map(_.map { doc =>
+        Discipline(
+          disciplineId = doc.getInteger("DisciplineId"),
+          disciplineName = doc.getString("DisciplineName"),
+          description = doc.getString("Description"),
+          credits = doc.getInteger("Credits"),
+          hours = doc.getInteger("Hours"),
+          disciplineType = TypeOfDiscipline.withName(doc.getString("DisciplineType")),
+          teacherIds = Option(doc.getList("TeacherIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+          department = doc.getString("Department"),
+          studentIds = Option(doc.getList("StudentIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+          topics = Option(doc.getList("Topics", classOf[String])).map(_.asScala.toList).getOrElse(List.empty),
+          classrooms = Option(doc.getList("Classrooms", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+          language = Languages.withName(doc.getString("Language")),
           scheduleIds = Option(doc.getList("ScheduleIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
         )
 
@@ -38,7 +67,6 @@ object DisciplineRepository {
     }
 
   }
-
   def getDisciplineById(disciplineId : String): Future[Option[Discipline]] = {
     val disciplineDocument = Document("_id" -> new ObjectId(disciplineId))
 
@@ -51,19 +79,57 @@ object DisciplineRepository {
             description = doc.getString("Description"),
             credits = doc.getInteger("Credits"),
             hours = doc.getInteger("Hours"),
-            disciplineType = doc.getString("DisciplineType"),
+            disciplineType = TypeOfDiscipline.withName(doc.getString("DisciplineType")),
             teacherIds = Option(doc.getList("TeacherIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
             department = doc.getString("Department"),
             studentIds = Option(doc.getList("StudentIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
             topics = Option(doc.getList("Topics", classOf[String])).map(_.asScala.toList).getOrElse(List.empty),
             classrooms = Option(doc.getList("Classrooms", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
-            language = doc.getString("Language"),
+            language = Languages.withName(doc.getString("Language")),
             scheduleIds = Option(doc.getList("ScheduleIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
           )
         )
         case None => None;
     }
   }
+
+  def findDisciplineByParams(param: String): Future[List[Discipline]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = Try(keyValue(1).toInt).toOption
+
+      val disciplineDocument = Document(key -> value)
+
+      MongoDBConnection.disciplineCollection
+        .find(disciplineDocument)
+        .toFuture()
+        .map { docs =>
+          docs.map { doc =>
+            Discipline(
+              disciplineId = doc.getInteger("DisciplineId"),
+              disciplineName = doc.getString("DisciplineName"),
+              description = doc.getString("Description"),
+              credits = doc.getInteger("Credits"),
+              hours = doc.getInteger("Hours"),
+              disciplineType = TypeOfDiscipline.withName(doc.getString("DisciplineType")),
+              teacherIds = Option(doc.getList("TeacherIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+              department = doc.getString("Department"),
+              studentIds = Option(doc.getList("StudentIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+              topics = Option(doc.getList("Topics", classOf[String])).map(_.asScala.toList).getOrElse(List.empty),
+              classrooms = Option(doc.getList("Classrooms", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+              language = Languages.withName(doc.getString("Language")),
+              scheduleIds = Option(doc.getList("ScheduleIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty)
+            )
+          }.toList
+        }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
+    }
+  }
+
 
   def addDiscipline(discipline:Discipline) : Future[String] = {
     val disciplineDocument = BsonDocument(
@@ -72,13 +138,13 @@ object DisciplineRepository {
       "Description" -> BsonString(discipline.description) ,
       "Credits" -> BsonInt32(discipline.credits) ,
       "Hours" -> BsonInt32(discipline.hours) ,
-      "DisciplineType" -> BsonString(discipline.disciplineType) ,
+      "DisciplineType" -> TypeOfDiscipline.toBsonStringDiscipline(discipline.disciplineType) ,
       "TeacherIds" -> BsonArray(discipline.teacherIds.map(BsonInt32(_))) ,
       "Department" -> BsonString(discipline.department) ,
       "StudentIds" -> BsonArray(discipline.studentIds.map(BsonInt32(_))),
       "Topics" -> BsonArray(discipline.topics.map(BsonString(_))) ,
       "Classrooms" -> BsonArray(discipline.classrooms.map(BsonInt32(_))) ,
-      "Language" -> BsonString(discipline.language) ,
+      "Language" -> Languages.toBsonStringLanguage(discipline.language) ,
       "ScheduleIds" -> BsonArray(discipline.scheduleIds.map(BsonInt32(_)))
     )
     MongoDBConnection.disciplineCollection.insertOne(disciplineDocument).toFuture().map(_=> s"Дисциплина - ${discipline.disciplineName} была добавлена , проверь БД ;)")
@@ -99,13 +165,13 @@ object DisciplineRepository {
         "Description" -> BsonString(updatedDiscipline.description),
         "Credits" -> BsonInt32(updatedDiscipline.credits),
         "Hours" -> BsonInt32(updatedDiscipline.hours),
-        "DisciplineType" -> BsonString(updatedDiscipline.disciplineType),
+        "DisciplineType" -> BsonString(updatedDiscipline.disciplineType.toString),
         "TeacherIds" -> BsonArray(updatedDiscipline.teacherIds.map(BsonInt32(_))),
         "Department" -> BsonString(updatedDiscipline.department),
         "StudentIds" -> BsonArray(updatedDiscipline.studentIds.map(BsonInt32(_))),
         "Topics" -> BsonArray(updatedDiscipline.topics.map(BsonString(_))),
         "Classrooms" -> BsonArray(updatedDiscipline.classrooms.map(BsonInt32(_))),
-        "Language" -> BsonString(updatedDiscipline.language),
+        "Language" -> BsonString(updatedDiscipline.language.toString),
         "ScheduleIds" -> BsonArray(updatedDiscipline.scheduleIds.map(BsonInt32(_)))
 
       )
@@ -123,3 +189,23 @@ object DisciplineRepository {
   }
 
 }
+
+
+//def addDiscipline(discipline: Discipline): Future[String] = {
+//  val disciplineDocument = BsonDocument(
+//    "DisciplineId" -> BsonInt32(discipline.disciplineId),
+//    "DisciplineName" -> BsonString(discipline.disciplineName),
+//    "Description" -> BsonString(discipline.description),
+//    "Credits" -> BsonInt32(discipline.credits),
+//    "Hours" -> BsonInt32(discipline.hours),
+//    "DisciplineType" -> BsonString(discipline.disciplineType.toString),
+//    "TeacherIds" -> BsonArray(discipline.teacherIds.map(BsonInt32(_))),
+//    "Department" -> BsonString(discipline.department),
+//    "StudentIds" -> BsonArray(discipline.studentIds.map(BsonInt32(_))),
+//    "Topics" -> BsonArray(discipline.topics.map(BsonString(_))),
+//    "Classrooms" -> BsonArray(discipline.classrooms.map(BsonInt32(_))),
+//    "Language" -> BsonString(discipline.language.toString),
+//    "ScheduleIds" -> BsonArray(discipline.scheduleIds.map(BsonInt32(_)))
+//  )
+//  MongoDBConnection.disciplineCollection.insertOne(disciplineDocument).toFuture().map(_ => s"Дисциплина - ${discipline.disciplineName} была добавлена , проверь БД ;)")
+//}

@@ -4,8 +4,10 @@ import MongoDBConnection._
 import model._
 import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters.CollectionHasAsScala
+import scala.util.Try
 
 object StudentRepository {
 
@@ -13,7 +15,6 @@ object StudentRepository {
 
   def getAllStudents(): Future[List[Student]] = {
     val futureStudents = MongoDBConnection.studentCollection.find().toFuture()
-
     futureStudents.map { docs =>
       Option(docs).map(_.map { doc =>
         Student(
@@ -24,9 +25,27 @@ object StudentRepository {
           gradesIds = Option(doc.getList("gradesIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
           subjectsIds = Option(doc.getList("subjectsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
           teachersIds = Option(doc.getList("teachersIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
-          status = doc.getString("status")
+          status = Statu.withName(doc.getString("status"))
         )
       }.toList).getOrElse(List.empty)
+    }
+  }
+
+  def getSortedStudent(): Future[List[Student]] = {
+    val futureStudents = MongoDBConnection.studentCollection.find().toFuture()
+    futureStudents.map { docs =>
+      Option(docs).map(_.map { doc =>
+        Student(
+          facultyId = doc.getInteger("faculty"),
+          courseId = doc.getInteger("course"),
+          specializationId = doc.getInteger("specialization"),
+          scheduleId = doc.getInteger("scheduleId"),
+          gradesIds = Option(doc.getList("gradesIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+          subjectsIds = Option(doc.getList("subjectsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+          teachersIds = Option(doc.getList("teachersIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+          status = Statu.withName(doc.getString("status"))
+        )
+      }.toList.sortBy(_.scheduleId)).getOrElse(List.empty)
     }
   }
 
@@ -44,10 +63,40 @@ object StudentRepository {
             gradesIds = Option(doc.getList("gradesIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
             subjectsIds = Option(doc.getList("subjectsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
             teachersIds = Option(doc.getList("teachersIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
-            status = doc.getString("status")
+            status = Statu.withName(doc.getString("status"))
           )
         )
       case None => None
+    }
+  }
+
+
+  def findStudentsByParams(param: String): Future[List[Student]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = Try(keyValue(1).toInt).toOption;
+
+      val studentDocument = Document(key -> value)
+
+      MongoDBConnection.studentCollection.find(studentDocument).toFuture().map { docs =>
+        docs.map { doc =>
+          Student(
+            facultyId = doc.getInteger("faculty"),
+            courseId = doc.getInteger("course"),
+            specializationId = doc.getInteger("specialization"),
+            scheduleId = doc.getInteger("scheduleId"),
+            gradesIds = Option(doc.getList("gradesIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            subjectsIds = Option(doc.getList("subjectsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            teachersIds = Option(doc.getList("teachersIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            status = Statu.withName(doc.getString("status"))
+          )
+        }.toList
+      }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
     }
   }
 
@@ -60,7 +109,7 @@ object StudentRepository {
       "gradesIds" -> BsonArray(student.gradesIds.map(BsonInt32(_))),
       "subjectsIds" -> BsonArray(student.subjectsIds.map(BsonInt32(_))),
       "teachersIds" -> BsonArray(student.teachersIds.map(BsonInt32(_))),
-      "status" -> BsonString(student.status)
+      "status" -> BsonString(student.status.toString)
     )
 
     MongoDBConnection.studentCollection.insertOne(studentDocument).toFuture().map(_ => s"Студент с id ${student.scheduleId} был добавлен, проверь БД ;)")
@@ -83,7 +132,7 @@ object StudentRepository {
         "gradesIds" -> BsonArray(updatedStudent.gradesIds.map(BsonInt32(_))),
         "subjectsIds" -> BsonArray(updatedStudent.subjectsIds.map(BsonInt32(_))),
         "teachersIds" -> BsonArray(updatedStudent.teachersIds.map(BsonInt32(_))),
-        "status" -> BsonString(updatedStudent.status)
+        "status" -> BsonString(updatedStudent.status.toString)
       )
     )
 

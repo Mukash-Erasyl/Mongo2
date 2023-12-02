@@ -15,6 +15,11 @@ object FacultyRoutes extends Json4sSupport {
   val route =
     pathPrefix("faculty") {
       concat(
+        get {
+          parameter("param") { param =>
+            complete(FacultyRepository.findFacultyByParams(param.toString))
+          }
+        },
         pathEnd {
           concat(
             get {

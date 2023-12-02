@@ -6,6 +6,7 @@ import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters.CollectionHasAsScala
+import scala.util.Try
 
 
 object DepartmentRepository {
@@ -53,6 +54,41 @@ object DepartmentRepository {
           )
         )
       case None => None
+    }
+  }
+
+
+  def findDepartmentsByParams(param: String): Future[List[Department]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = Try(keyValue(1).toInt).toOption
+
+      val departmentDocument = Document(key -> value)
+
+      MongoDBConnection.departmentCollection
+        .find(departmentDocument)
+        .toFuture()
+        .map { docs =>
+          docs.map { doc =>
+            Department(
+              departmentId = doc.getInteger("departmentId"),
+              name = doc.getString("name"),
+              email = doc.getString("email"),
+              number = doc.getString("number"),
+              direction = doc.getString("direction"),
+              headId = doc.getInteger("headId"),
+              studentsIds = Option(doc.getList("studentsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+              disciplinesIds = Option(doc.getList("disciplinesIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+              publicationsIds = Option(doc.getList("publicationsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+              collaboration = doc.getString("collaboration")
+            )
+          }.toList
+        }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
     }
   }
 

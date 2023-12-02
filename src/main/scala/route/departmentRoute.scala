@@ -11,9 +11,16 @@ object DepartmentRoutes extends Json4sSupport {
   implicit val serialization = jackson.Serialization
   implicit val formats = DefaultFormats
 
+//  complete(DepartmentRepository.findDepartmentsByParams(param.toString))
+
   val route =
     pathPrefix("department") {
       concat(
+        get {
+          parameter("param") { param =>
+              complete(DepartmentRepository.findDepartmentsByParams(param.toString))
+          }
+        },
         pathEnd {
           concat(
             get {

@@ -13,6 +13,11 @@ object ScheduleRoutes extends Json4sSupport {
   val route =
     pathPrefix("schedule") {
       concat(
+        get {
+          parameter("param") { param =>
+            complete(ScheduleRepository.findScheduleByParams(param.toString))
+          }
+        },
         pathEnd {
           concat(
             get {

@@ -6,6 +6,7 @@ import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters.CollectionHasAsScala
+import scala.util.Try
 
 object SyllabusRepository {
 
@@ -60,6 +61,42 @@ object SyllabusRepository {
           )
         )
       case None => None
+    }
+  }
+
+
+  def findSyllabusByParams(param: String): Future[List[Syllabus]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = Try(keyValue(1).toInt).toOption
+
+      val syllabusDocument = Document(key -> value)
+
+      MongoDBConnection.syllabusCollection.find(syllabusDocument).toFuture().map { docs =>
+        docs.map { doc =>
+          Syllabus(
+            planId = doc.getInteger("planId"),
+            name = doc.getString("name"),
+            description = doc.getString("description"),
+            credits = doc.getInteger("credits"),
+            hours = doc.getInteger("hours"),
+            disciplineType = doc.getString("disciplineType"),
+            teachersIds = Option(doc.getList("teachersIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            departmentId = doc.getInteger("departmentId"),
+            studentsIds = Option(doc.getList("studentsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            materialsIds = Option(doc.getList("materialsIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            topics = Option(doc.getList("topics", classOf[String])).map(_.asScala.toList).getOrElse(List.empty),
+            classrooms = Option(doc.getList("classrooms", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty),
+            language = doc.getString("language"),
+            schedulesIds = Option(doc.getList("schedulesIds", classOf[Integer])).map(_.asScala.map(_.toInt).toList).getOrElse(List.empty)
+          )
+        }.toList
+      }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
     }
   }
 

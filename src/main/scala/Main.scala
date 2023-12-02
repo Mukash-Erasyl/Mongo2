@@ -8,8 +8,11 @@ import org.json4s.{DefaultFormats, jackson}
 import akka.http.scaladsl.server.Directives._
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import route._
+import repository._;
 
 import scala.io.StdIn;
+
+
 
 object Main extends Json4sSupport {
 
@@ -28,8 +31,7 @@ object Main extends Json4sSupport {
       SyllabusRoutes.route ~
       TeacherRoutes.route ~
       UserRoutes.route ~
-      ExRoutes.route;
-
+      ExRoutes.route
     val bindingFuture = Http().bindAndHandle(allRoutes, "localhost", 8080)
 
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")

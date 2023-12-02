@@ -4,6 +4,8 @@ import MongoDBConnection._
 import model._
 import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
+
+import java.text.SimpleDateFormat
 import scala.concurrent.{ExecutionContext, Future}
 
 
@@ -22,7 +24,7 @@ object UserRepository {
           password = doc.getString("password"),
           userType = doc.getString("userType"),
           name = doc.getString("name"),
-          birthDate = doc.getString("birthDate"),
+          birthDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(doc.getString("birthDate")),
           gender = doc.getString("gender"),
           nationality = doc.getString("nationality"),
           address = doc.getString("address")
@@ -43,13 +45,51 @@ object UserRepository {
             password = doc.getString("password"),
             userType = doc.getString("userType"),
             name = doc.getString("name"),
-            birthDate = doc.getString("birthDate"),
+            birthDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(doc.getString("birthDate")),
+
             gender = doc.getString("gender"),
             nationality = doc.getString("nationality"),
             address = doc.getString("address")
           )
         )
       case None => None
+    }
+  }
+
+  def findUserByParams(param: String): Future[Option[User]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = keyValue(1)
+
+      val userDocument = key match {
+        case "id" | "experience" | "scheduleId" | "salary" | "newsId" | "materialsId" | "certificationId" | "attestationId" =>
+          Document(key -> value.toInt)
+        case _ =>
+          Document(key -> value)
+      }
+
+      MongoDBConnection.userCollection.find(userDocument).headOption().map {
+        case Some(doc) =>
+          Some(
+            User(
+              id = doc.getInteger("id"),
+              login = doc.getString("login"),
+              password = doc.getString("password"),
+              userType = doc.getString("userType"),
+              name = doc.getString("name"),
+              birthDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(doc.getString("\nbirthDate")) ,
+              gender = doc.getString("gender"),
+              nationality = doc.getString("nationality"),
+              address = doc.getString("address")
+            )
+          )
+        case None => None
+      }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
     }
   }
 
@@ -60,7 +100,7 @@ object UserRepository {
       "password" -> BsonString(user.password),
       "userType" -> BsonString(user.userType),
       "name" -> BsonString(user.name),
-      "birthDate" -> BsonString(user.birthDate),
+      "birthDate" -> new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").format(user.birthDate) ,
       "gender" -> BsonString(user.gender),
       "nationality" -> BsonString(user.nationality),
       "address" -> BsonString(user.address)
@@ -88,7 +128,7 @@ object UserRepository {
         "password" -> BsonString(updatedUser.password),
         "userType" -> BsonString(updatedUser.userType),
         "name" -> BsonString(updatedUser.name),
-        "birthDate" -> BsonString(updatedUser.birthDate),
+        "birthDate" -> new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").format(updatedUser.birthDate) ,
         "gender" -> BsonString(updatedUser.gender),
         "nationality" -> BsonString(updatedUser.nationality),
         "address" -> BsonString(updatedUser.address)

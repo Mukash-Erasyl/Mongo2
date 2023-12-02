@@ -6,6 +6,7 @@ import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt32, BsonString, ObjectId}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters.CollectionHasAsScala
+import scala.util.Try;
 
 object ScheduleRepository {
 
@@ -60,6 +61,44 @@ object ScheduleRepository {
       case None => None
     }
   }
+
+  def findScheduleByParams(param: String): Future[List[Schedule]] = {
+    val keyValue = param.split("=")
+
+    if (keyValue.length == 2) {
+      val key = keyValue(0)
+      val value = Try(keyValue(1).toInt).toOption
+
+      val scheduleDocument = Document(key -> value)
+
+      MongoDBConnection.scheduleCollection
+        .find(scheduleDocument)
+        .toFuture()
+        .map { docs =>
+          docs.map { doc =>
+            Schedule(
+              scheduleId = doc.getInteger("ScheduleID"),
+              year = doc.getInteger("Year"),
+              semester = doc.getInteger("Semester"),
+              faculty = doc.getString("Faculty"),
+              group = doc.getInteger("Group"),
+              specialization = doc.getString("Specialization"),
+              weekday = doc.getString("Weekday"),
+              startTime = doc.getString("StartTime"),
+              endTime = doc.getString("EndTime"),
+              classroom = doc.getInteger("Classroom"),
+              teacherId = doc.getInteger("TeacherID"),
+              disciplineId = doc.getInteger("Discipline"),
+              teacherISS = doc.getInteger("TeacherISS")
+            )
+          }.toList
+        }
+    } else {
+      // Обработка некорректного ввода
+      Future.failed(new IllegalArgumentException("Неверный формат параметра"))
+    }
+  }
+
 
   def addSchedule(schedule: Schedule): Future[String] = {
     val scheduleDocument = BsonDocument(

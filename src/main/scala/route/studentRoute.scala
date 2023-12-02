@@ -4,15 +4,26 @@ import akka.http.scaladsl.server.Directives._
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import org.json4s.{DefaultFormats, jackson}
 import repository.StudentRepository
-import model.Student
+import model.{JsonFormats, Student}
 
 object StudentRoutes extends Json4sSupport {
   implicit val serialization = jackson.Serialization
-  implicit val formats = DefaultFormats
+  implicit val formats =JsonFormats.formats
 
   val route =
     pathPrefix("student") {
       concat(
+          get {
+            parameter("param") { param =>
+              complete(StudentRepository.findStudentsByParams(param.toString))
+            }
+          }
+         ,
+        path("sort") { // Обновление пути для нового endpoint
+          get {
+            complete(StudentRepository.getSortedStudent())
+          }
+        },
         pathEnd {
           concat(
             // Define route for getting all students
@@ -44,7 +55,8 @@ object StudentRoutes extends Json4sSupport {
               complete(StudentRepository.deleteStudent(studentId))
             }
           )
-        }
+        } ,
+
       )
     }
 }

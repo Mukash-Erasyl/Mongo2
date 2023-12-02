@@ -13,6 +13,11 @@ object UserRoutes extends Json4sSupport {
   val route =
     pathPrefix("user") {
       concat(
+        get {
+          parameter("param") { param =>
+            complete(UserRepository.findUserByParams(param.toString))
+          }
+        },
         pathEnd {
           concat(
             get {

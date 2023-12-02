@@ -1,7 +1,5 @@
 package MongoDBConnection
 import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase}
-import org.mongodb.scala.model.Filters._
-import org.mongodb.scala.model.Updates._
 
 
 

@@ -4,15 +4,20 @@ import akka.http.scaladsl.server.Directives._
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import org.json4s.{DefaultFormats, jackson}
 import repository.TeacherRepository
-import model.Teacher
+import model.{JsonFormatsTeaher, Teacher}
 
 object TeacherRoutes extends Json4sSupport {
   implicit val serialization = jackson.Serialization
-  implicit val formats = DefaultFormats
+  implicit val formats = JsonFormatsTeaher.formats;
 
   val route =
     pathPrefix("teacher") {
       concat(
+        get {
+          parameter("param") { param =>
+            complete(TeacherRepository.findTeacherByParams(param.toString))
+          }
+        },
         pathEnd {
           concat(
             get {
